@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block main %}
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Add Demande Purchase</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                {% url 'new_demande' as action_path %}
+                {% include 'pages/adminPage/form_template.html' with messages=messages form=form action_path=action_path button_text="Add Demande" %}
+            </div>
+            <!-- /.card -->
+
+
+
+          </div>
+          </div>
+      </div>
+    </section>
+    <!-- /.content -->
+
+
+    <script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+{% endblock main %}

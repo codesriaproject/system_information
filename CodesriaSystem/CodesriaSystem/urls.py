@@ -23,4 +23,8 @@ urlpatterns = [
     # path("admin/", admin.site.urls),
     path("", include("leave.urls")),
     path("log/", include("users.urls")),
+    path("directory/", include("directory.urls")),
+    path("enter_exit/", include("in_out.urls")),
+    path("purchase/", include("purchase.urls")),
+
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL,document_root=settings.STATICFILES_DIRS)

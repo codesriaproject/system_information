@@ -29,6 +29,7 @@ urlpatterns = [
     path('add_vigil',HodViews.add_vigil,name="add_vigil"),
     path('add_vigil_save',HodViews.add_vigil_save,name="add_vigil_save"),
     path("vigil/profil/", VigilView.vigil_profilview,name='profil_vigil'),
+    path('vigil_list',HodViews.list_vigil,name="vigil_list"),
 #=========================End Vigil===============================================
 #=========================Start Vigil===============================================
      

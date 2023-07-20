@@ -1,10 +1,16 @@
 asgiref==3.7.2
 Django==4.2.3
 django-appconf==1.0.5
+django-autoslug==1.9.9
+django-ckeditor==6.6.1
+django-countries==7.5.1
+django-country-regions==0.0.1
 django-imagekit==4.1.0
+django-js-asset==2.1.0
 pilkit==2.0
 Pillow==10.0.0
 psycopg2==2.9.6
 six==1.16.0
 sqlparse==0.4.4
+typing_extensions==4.7.1
 tzdata==2023.3

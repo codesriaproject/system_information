@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-6 col-md-6">
+                                <!-- Tab panes -->
+                                <div class="tab-content" id="myTabContent">
+                                  <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                                         <img class="img-fluid rounded  " src="{% static "images/coin.png" %}" alt="">
+                                  </div>
+
+                                  
+                                </div>
+                                <div class="tab-slide-content new-arrival-product mb-4 mb-xl-0">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs slide-item-list mt-3" id="myTab" role="tablist">
+                                          <li class="nav-item" role="presentation">
+                                            <a href="#first" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"  role="tab" aria-controls="home-tab-pane" aria-selected="true"><img class="img-fluid me-2 rounded" src="images/tab/1.jpg" alt="" width="80"></a>
+                                          </li>
+                                          <li class="nav-item" role="presentation">
+                                            <a href="#second" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"  role="tab" aria-controls="profile-tab-pane" aria-selected="false"><img class="img-fluid me-2 rounded" src="images/tab/2.jpg" alt="" width="80"></a>
+                                          </li>
+                                          <li class="nav-item" role="presentation">
+                                            <a href="#third" class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" role="tab" aria-controls="contact-tab-pane" aria-selected="false"><img class="img-fluid me-2 rounded" src="images/tab/3.jpg" alt="" width="80"></a>
+                                          </li>
+                                          <li class="nav-item" role="presentation">
+                                            <a href="#for" class="nav-link" id="end-tab" data-bs-toggle="tab" data-bs-target="#end-tab-pane"  role="tab" aria-controls="end-tab-pane" aria-selected="false"><img class="img-fluid  rounded" src="images/tab/4.jpg" alt="" width="80"></a>
+                                          </li>
+                                 
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--Tab slider End-->
+                            <div class="col-xl-9 col-lg-6 col-md-6 col-sm-12">
+                                <div class="product-detail-content">
+                                    <!--Product details-->
+                                    <div class="new-arrival-content pr">
+                                        <p><strong> <u> Demandeur:</u></strong> <span class="item"></span></p>
+
+                                        <h4>{{demande.staff.admin.first_name}} {{demande.staff.admin.last_name}}
+                                        </h4>
+
+                                        <div class="d-table mb-2">
+                                            <p><strong> <u> Departement:</u></strong> <span class="item"></span></p>
+                                            <p class="price float-start d-block"> {{demande.staff.department_id.name}} </p>
+                                        </div>
+
+
+                                        <br>
+                                        <p><strong> <u>Objet de la Demande:</u></strong> <span class="item"></span></p>
+
+                                        <p class="text-content">{{demande.note_demande|safe}}</p>
+
+
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <p><strong> <u> Date:</u></strong> <span class="item"></span></p>
+
+                                        <p class="text-content">{{demande.date_demande}}</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- review -->
+
+        </div>
+
+
+
+{% endblock main %}

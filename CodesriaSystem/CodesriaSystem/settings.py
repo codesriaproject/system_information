@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     "purchase",
     "in_out",
     "users",
+    "django_countries",
+    'ckeditor',
     
 ]
 
@@ -144,3 +146,7 @@ AUTHENTICATION_BACKENDS=['users.EmailBackEnd.EmailBackEnd']
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+LOGIN_REDIRECT_URL = '/log'

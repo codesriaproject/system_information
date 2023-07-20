@@ -1,9 +1,13 @@
 from django.shortcuts import render ,get_object_or_404, redirect, reverse
 from users.models import *
+
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from users.forms import *
+
+
+
 
 
 def adminhome(request):
@@ -14,7 +18,7 @@ def adminhome(request):
 
 
 
-
+#=============================Start Vigil====================================================
 def add_vigil(request):
     return render(request,"pages/adminPage/add_vigil.html")
 
@@ -50,6 +54,19 @@ def add_vigil_save(request):
         else:
             form=AddVigilForm(request.POST)
             return render(request, "pages/adminPage/add_vigil.html", {"form": form})
+        
+def list_vigil(request):
+
+    vigil = CustomUser.objects.filter(user_type=3)
+
+    context = {
+        'vigil': vigil,
+
+    }
+
+    return render(request,"pages/adminPage/vigil_list.html", context)
+
+
 
 
 #========================================END VIGIL=====================================================
@@ -106,14 +123,6 @@ def add_staff_save(request):
             form=AddStaffForm(request.POST)
             return render(request, "pages/adminPage/add_staff.html", {"form": form})
 
-
-
-
-
-
-
-
-
 def list_staff(request):
 
     staff = CustomUser.objects.filter(user_type=2)
@@ -124,3 +133,8 @@ def list_staff(request):
     }
 
     return render(request,"pages/adminPage/staff_list.html", context)
+
+
+#=========================================End Staff====================================
+
+
