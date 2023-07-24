@@ -16,6 +16,7 @@ class StaffLeave(models.Model):
     note_demande = RichTextField()
     chef_recept=models.ForeignKey(Staff,on_delete=models.PROTECT, related_name="chef_rept")
     date_demande=models.DateTimeField(auto_now=False, auto_now_add=True, null=True)
+    signature =models.ForeignKey(Signature, on_delete=models.PROTECT, null=True, default=1)
 
 
 class Invoice(models.Model):
@@ -26,6 +27,7 @@ class Invoice(models.Model):
     lieu_livraison = models.TextField(null=True, default="")
     observation = models.TextField(null=True, default="")
     status = models.SmallIntegerField(default=0, null=True)
+    signature =models.ForeignKey(Signature, on_delete=models.PROTECT, null=True, default=1)
 
 
     @property
@@ -66,8 +68,9 @@ class Article(models.Model):
 
 
 class SecretaryValidate(models.Model):
-    purchase_recept=models.ForeignKey(Staff,on_delete=models.CASCADE)
-    signature = models.ImageField(default="", null=True)
+    purchase_recept=models.ForeignKey(Invoice,on_delete=models.CASCADE, null=True, default=0)
+    signature =models.ForeignKey(Signature, on_delete=models.PROTECT, null=True, default=0)
+    staff=models.ForeignKey(Staff,on_delete=models.CASCADE, null=True, default=5)
 
 
 class Voucher(models.Model):

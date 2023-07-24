@@ -51,6 +51,10 @@ class Vigil(models.Model):
 
 
 
+class Signature(models.Model):
+    staff_sign = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    sign = models.ImageField()
+     
 
 
 

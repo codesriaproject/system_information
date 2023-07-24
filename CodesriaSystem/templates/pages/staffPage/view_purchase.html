@@ -23,14 +23,15 @@
 }
 .invoice-container .invoice-header address {
     font-size: 0.8rem;
-    color: #020811;
+    color: #eceef1;
     margin: 0;
 }
 .invoice-container .invoice-details {
     margin: 1rem 0 0 0;
     padding: 1rem;
     line-height: 180%;
-    background:  #2f71c1;
+    background:  #000811;
+
 }
 .invoice-container .invoice-details .invoice-num {
     text-align: right;
@@ -99,15 +100,15 @@
     border: 1px solid #2b3958;
 }
 .custom-table thead {
-    background: #2f71c1;
+    background: #010408;
 }
 .custom-table thead th {
-    border: 0;
+    border: 1px solid white;
     color: #ffffff;
 }
-.custom-table > tbody tr:hover {
+/* .custom-table > tbody tr:hover {
     background: #ececee;
-}
+} */
 .custom-table > tbody tr:nth-of-type(even) {
     background-color: #cbccc5;;
 }
@@ -144,11 +145,21 @@
     					<div class="invoice-header">
     
     						<!-- Row start -->
+
+                            <div class="row gutters">
+    							<div class="col-xl-12 col-lg-12 col-md-3 col-sm-6">
+    								<div class="custom-actions-btns mb-5">
+    									<a data-toggle="modal" data-target="#myModal" href=" {% url 'signature_view' %} " class="btn btn-secondary">
+    										<i class="icon-printer"></i> Signer
+    									</a>
+    								</div>
+    							</div>
+    						</div>
     						
     						<!-- Row end -->
     
     						<!-- Row start -->
-    						<div class="row gutters">
+    						<div style="padding: -50px;" class="row gutters">
     							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
     								<a href="donaldprogrammeur.com" class="invoice-logo">
     									CODESRIA INVOICE
@@ -161,7 +172,7 @@
     						<!-- Row start -->
     						<div class="row gutters">
     							<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-    								<div style="color: #020811 !important" class="invoice-details">
+    								<div style="color:#eaedf1 !important" class="invoice-details">
     									<address  >
                                             <u>	Demandeur:</u> {{invoice.staffleave.staff.admin.first_name}} {{invoice.staffleave.staff.admin.last_name}}<br>
                                         <u>Departement:</u> {{invoice.staffleave.staff.department_id.name}}
@@ -170,7 +181,7 @@
     							</div>
     							<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
     								<div class="invoice-details">
-    									<div style="color: #020811 !important" class="invoice-num">
+    									<div style="color: #eaedf1 !important" class="invoice-num">
     										<div>INVOICE - #00{{invoice.id}}</div>
     										<div>{{invoice.date_creation}}</div>
     									</div>
@@ -205,7 +216,7 @@
 
                                                    
 
-                                                    <td>
+                                                    <td style="width: 10px;">
     													
                                                         {{ article.id }}
     													
@@ -238,7 +249,7 @@
     											
     											
     											<tr>
-    												<td>Observation:<br> {{invoice.observation}}</td>
+                                                    <td></td>
     												<td colspan="2">
                                                         <br>
                                                         <br>
@@ -255,6 +266,7 @@
     													</p>
     													
     												</td>
+
                                                     <td> 
                                                         <br>
                                                         <br>
@@ -272,7 +284,16 @@
                                                     </td>
     											</tr>
     										</tbody>
+
     									</table>
+                                        <table>
+                                            <thead style="border: 1px solid white; color: #010816;">
+                                                <tr>
+
+                                                    <td style="border-right: none;">Observation:<br> {{invoice.observation|linebreaks}}</td>
+                                                </tr>
+                                            </thead>
+                                        </table>
     								</div>
     							</div>
     						</div>
@@ -280,9 +301,62 @@
     
     					</div>
     
-    					{% comment %} <div class="invoice-footer">
-    						Thank you for your purchase .
-    					</div> {% endcomment %}
+    					<div class="container">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <!-- Élément 1 -->
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p style="text-align: left; color: #010816;"><strong>CHEF {{ invoice.staffleave.staff.department_id.name }}</strong></p>
+                    
+
+                            {% if invoice.staffleave.signature.sign %}
+                                    <img style="width: 150px; height: 150px;" src="{{ invoice.staffleave.signature.sign.url }}" alt="profile picture">
+                                    <h4>{{ invoice.staffleave.staff.admin.first_name }} {{ invoice.staffleave.staff.admin.last_name }}</h4>
+                                {% else %}
+                                    <p>Aucune image de profil trouvée.</p>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <!-- Élément 1 -->
+                        <div class="card">
+                            <div class="card-body">
+                                <p style="text-align: left; color: #010816;"><strong>DAF</strong></p>
+
+                                {% if invoice.signature.sign %}
+                                <img style="width: 150px; height: 150px;"  src="{{ invoice.signature.sign.url }}" alt="profile picture">
+                                <h4>{{ invoice.staffleave.chef_recept.admin.first_name }} {{ invoice.staffleave.chef_recept.admin.last_name }}</h4>
+
+                            {% else %}
+                                <p>Aucune image de profil trouvée.</p>
+                            {% endif %}
+ 
+                        </div>
+
+                        <div class="col-sm-3">
+                            <!-- Élément 1 -->
+                            <!-- <div class="card">
+                                <div class="card-body">
+                                    <p style="text-align: left; color: #010816;"><strong>Executive Secretary</strong></p>
+    
+                                    {% if invoice.signature.sign %}
+                                    <img style="width: 150px; height: 150px;"  src="{{ validate.signature.staff_sign..url }}" alt="profile picture">
+                                    <h4>{{ validate.signature.admin.first_name }} {{ invoice.staffleave.chef_recept.admin.last_name }}</h4>
+    
+                                {% else %}
+                                    <p>Aucune image de profil trouvée.</p>
+                                {% endif %}
+     
+                            </div> -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+                    
     
     				</div>
     			</div>
@@ -290,5 +364,9 @@
     	</div>
     </div>
 </div>
+
+
+
+
 
 {% endblock main %}

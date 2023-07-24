@@ -3,6 +3,14 @@ from django import forms
 from users.models import *
 
 
+class CustomImageWidget(forms.FileInput):
+    def __init__(self, attrs=None, *args, **kwargs):
+        default_attrs = {'class': 'form-control'}
+        if attrs:
+            default_attrs.update(attrs)
+        super().__init__(default_attrs, *args, **kwargs)
+
+
 
 class DateInput(forms.DateInput):
     input_type = "date"
@@ -45,7 +53,15 @@ class AddStaffForm(forms.Form):
     profile_pic=forms.FileField(label="Profile Pic",max_length=50,widget=forms.FileInput(attrs={"class":"form-control"}))
 
 
+class AddSignatureForm(forms.Form):
+    sign=forms.ImageField(widget=CustomImageWidget)
 
+
+
+
+class AddDepartementForm(forms.Form):
+    name=forms.CharField(label="Name",max_length=50,widget=forms.TextInput(attrs={"class":"form-control"}))
+    libelle=forms.CharField(label="Description",max_length=500,widget=forms.TextInput(attrs={"class":"form-control"}))
 
 
 

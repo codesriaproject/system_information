@@ -7,10 +7,15 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from purchase.models import *
 from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 from purchase.sup import get_invoice
+from users.models import *
 
 # Create your views here.
+
+
+#=================================Demande Start==================================
 
 # @method_decorator(login_required(login_url='show_login'))
 def add_demande(request):
@@ -22,7 +27,7 @@ def add_demande_save(request):
     if request.method!="POST":
         return HttpResponse("Method Not Allowed")
     else:
-        form=AddDemandeForm(request.POST)
+        form=AddDemandeForm(request.POST,request.FILES)
         if form.is_valid():
             note_demande=form.cleaned_data["note_demande"]
             staff = get_object_or_404(Staff, admin_id=request.user.id)
@@ -44,8 +49,9 @@ def add_demande_save(request):
 
 
 def demande_list(request):
+    staff_instance = Staff.objects.get(admin_id=request.user)
     
-    demande = StaffLeave.objects.all().order_by('-date_demande')
+    demande = StaffLeave.objects.filter(chef_recept_id= staff_instance).order_by('-date_demande')
 
     context = {
         'demande': demande,
@@ -63,7 +69,11 @@ def demande_details(request,demande_id):
     return render(request,"pages/staffPage/demande_details.html", context)
 
 
-#=========================================PURCHASE=============================================
+#=================================Demande End==================================
+
+
+
+#=========================================Purchase Start=============================================
 
 
 
@@ -74,13 +84,14 @@ def demande_details(request,demande_id):
 def get_demande(request,staffleav_id):
         staffleave=StaffLeave.objects.get(id=staffleav_id)
         customers = Fournisseur.objects.all()
+        staff_instance = Staff.objects.get(admin_id=request.user)
+        signatures = Signature.objects.filter(staff_sign_id=staff_instance)
 
         context = {
         'customers': customers,
-        'staffleave':staffleave
+        'staffleave':staffleave,
+        'signatures':signatures
             }
-
-
         
         if request.method=="GET":
             return render(request, 'pages/staffPage/add_purchase.html', context)
@@ -92,6 +103,8 @@ def get_demande(request,staffleav_id):
             try: 
 
                 customer = request.POST.get('customer')
+                
+                signature = request.POST.get('signature')
 
                 articles = request.POST.getlist('article')
 
@@ -111,10 +124,12 @@ def get_demande(request,staffleav_id):
 
                 invoice_object = {
                     'client_id': customer,
+                    'signature_id': signature,
                     'staffleave_id':staffleave,
                     'total': total,
                     'lieu_livraison': lieu_livraison,
-                    'observation': observation
+                    'observation': observation,
+                    
                 }
 
                 invoice = Invoice.objects.create(**invoice_object)
@@ -163,7 +178,89 @@ class InvoiceView(View):
     def get(self, request, *args, **kwargs):
 
         id = kwargs.get('id')
-
         context = get_invoice(id)
 
         return render(request, self.template_name, context)
+    
+    def post(self,request, *args, **kwargs):
+        
+        if request.method == 'POST':
+            invoice_id=request.POST.get('id')
+            signature = request.POST.get('signature')
+            try:
+                sign_secretary = SecretaryValidate()
+                sign_secretary.purchase_recept_id=invoice_id
+                sign_secretary.signature_id = signature
+                sign_secretary.save()
+                return HttpResponse(True)
+
+            except Exception as e:
+                return HttpResponse(False)
+
+        return render(request,'pages/staffPage/view_purchase.html')
+
+
+
+#=================================Purchase End==================================
+
+#=================================Signature Secretary Start==================================
+
+
+class ModalView(View):
+    template_name="main/modal_sign.html"
+    def get(self,request, *args, **kwargs):
+        signature=Signature.objects.all()
+        context={
+                
+                'signature':signature,
+         
+         }
+        return render(request,self.template_name,context)
+
+
+
+#=================================Signature Secretary End==================================
+
+#=================================Fournisseur Start==================================
+
+
+def add_fournisseur(request):
+    return render(request,"pages/staffPage/add_fournisseur.html")
+
+
+
+def add_fournisseur_save(request):
+    if request.method!="POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        form=AddFournisseurForm(request.POST)
+        if form.is_valid():
+            name=form.cleaned_data["name"]
+            address=form.cleaned_data["address"]
+            phone_number=form.cleaned_data["phone_number"]
+            try:
+                founisseur=Fournisseur(name=name, address=address,phone_number=phone_number)
+                founisseur.save()
+                messages.success(request,"Successfully Added In Fournisseur")
+                return HttpResponseRedirect(reverse("add_fournisseur"))
+            except Exception as e:
+                messages.error(request,"Failed to Add In Fournisseur" + str(e))
+                return HttpResponseRedirect(reverse("add_fournisseur"))
+        else:
+            form=AddFournisseurForm(request.POST)
+            return render(request, "pages/staffPage/add_fournisseur.html", {"form": form})
+
+
+
+def fournisseur_list(request):
+    
+    fournisseur = Fournisseur.objects.all()
+
+    context = {
+        'fournisseur': fournisseur,
+
+    }
+    return render(request,"pages/staffPage/fournisseur_list.html", context)
+
+
+#=================================Fournisseur End==================================

@@ -31,6 +31,17 @@ urlpatterns = [
     path("vigil/profil/", VigilView.vigil_profilview,name='profil_vigil'),
     path('vigil_list',HodViews.list_vigil,name="vigil_list"),
 #=========================End Vigil===============================================
-#=========================Start Vigil===============================================
+#=========================Start Others===============================================
+
+
+    path('add_sign',views.add_sign, name="add_sign"),
+    path('add_sign_save',views.add_sign_save, name="new_sign"),
+    path('sign_list',views.sign_list, name="sign_list"),
+
+
+
+    path('add_department',views.add_department, name="add_department"),
+    path('add_department_save',views.add_department_save, name="new_department"),
+    path('department_list',views.department_list, name="department_list"),
      
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL,document_root=settings.STATICFILES_DIRS)
