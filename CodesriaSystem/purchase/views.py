@@ -22,6 +22,7 @@ def add_demande(request):
     return render(request,"pages/staffPage/purchase_demande.html")
 
 
+
 # @method_decorator(login_required(login_url='show_login'))
 def add_demande_save(request):
     if request.method!="POST":
@@ -46,7 +47,7 @@ def add_demande_save(request):
             form=AddDemandeForm(request.POST)
             return render(request, "pages/staffPage/purchase_demande.html", {"form": form})
 
-
+ 
 
 def demande_list(request):
     staff_instance = Staff.objects.get(admin_id=request.user)
@@ -86,11 +87,13 @@ def get_demande(request,staffleav_id):
         customers = Fournisseur.objects.all()
         staff_instance = Staff.objects.get(admin_id=request.user)
         signatures = Signature.objects.filter(staff_sign_id=staff_instance)
+        secretary_rept=Staff.objects.all()
 
         context = {
         'customers': customers,
         'staffleave':staffleave,
-        'signatures':signatures
+        'signatures':signatures,
+        'secretary_rept':secretary_rept,
             }
         
         if request.method=="GET":
@@ -119,6 +122,8 @@ def get_demande(request,staffleav_id):
                 observation = request.POST.get('observation')
 
                 staffleave=request.POST.get("staffleave")
+
+                secretary_rept=request.POST.get("secretary_rept")
                 
                 lieu_livraison = request.POST.get('lieu_livraison')
 
@@ -126,6 +131,7 @@ def get_demande(request,staffleav_id):
                     'client_id': customer,
                     'signature_id': signature,
                     'staffleave_id':staffleave,
+                    'secretary_recept_id':secretary_rept,
                     'total': total,
                     'lieu_livraison': lieu_livraison,
                     'observation': observation,
@@ -161,8 +167,9 @@ def get_demande(request,staffleav_id):
 
 
 def purchase_list(request):
+    staff_instance = Staff.objects.get(admin_id=request.user)
     
-    invoice = Invoice.objects.all().order_by('-date_creation')
+    invoice = Invoice.objects.filter(secretary_recept_id=staff_instance).order_by('-date_creation')
 
     context = {
         'invoice': invoice,
@@ -264,3 +271,117 @@ def fournisseur_list(request):
 
 
 #=================================Fournisseur End==================================
+#=================================Voucher Start====================================
+
+def get_voucher(request, staffleave_id):
+        staffleave = StaffLeave.objects.get(id=staffleave_id)
+        customers = Fournisseur.objects.all()
+        staff_instance = Staff.objects.get(admin_id=request.user)
+        signatures = Signature.objects.filter(staff_sign_id=staff_instance)
+        secretary_recept = Staff.objects.all()
+
+        context = {
+            'customers': customers,
+            'staffleave': staffleave,
+            'signatures': signatures,
+            'secretary_recept': secretary_recept,
+        }
+
+        if request.method == "GET":
+            return render(request, 'pages/staffPage/add_voucher.html', context)
+
+        elif request.method == "POST":
+
+            try:
+
+                customer = request.POST.get('customer')
+
+                signature = request.POST.get('signature')
+
+                chequetransfert = request.POST.get('chequetransfert')
+
+                bankname = request.POST.get('bankname')
+
+                budgetyear = request.POST.get('budgetyear')
+
+                programmetype = request.POST.get('programmetype')
+
+                programmecode = request.POST.get('programmecode')
+
+                subprogrammecode = request.POST.get('subprogrammecode')
+
+                programmeactivecode= request.POST.get('programmeactivecode')
+
+                programmeactivetitle = request.POST.get('programmeactivetitle')
+
+                donor=request.POST.get('donor')
+
+                accountdebit=request.POST.get('accountdebit')
+
+                accountcredit=request.POST.get('accountcredit')
+
+                total = request.POST.get('total')
+
+                description = request.POST.get('description')
+
+                staffleave = request.POST.get("staffleave")
+
+                secretary_recept = request.POST.get("secretary_recept")
+
+                lieu_livraison = request.POST.get('lieu_livraison')
+
+                invoice_object = {
+                    'client_id': customer,
+                    'signature_id': signature,
+                    'staffleave_id': staffleave,
+                    'secretary_recept_id': secretary_recept,
+                    'total': total,
+                    'lieu_livraison': lieu_livraison,
+                    'description': description,
+                    'chequetransfert':chequetransfert,
+                    'bankname':bankname,
+                    'budgetyear':budgetyear,
+                    'programmetype':programmetype,
+                    'programmeactivecode':programmeactivecode,
+                    'subprogrammecode':subprogrammecode,
+                    'programmecode':programmecode,
+                    'programmeactivetitle':programmeactivetitle,
+                    'donor':donor,
+                    'accountdebit':accountdebit,
+                    'accountcredit':accountcredit
+
+
+                }
+
+                created = Voucher.objects.create(**invoice_object)
+
+
+                if created:
+                    messages.success(request, "Voucher saved successfully.")
+                else:
+                    messages.error(request, "Sorry, please try again the sent data is corrupt.")
+
+            except Exception as e:
+                messages.error(request, f"Sorry the following error has occured {e}.")
+
+        return render(request, 'pages/staffPage/add_voucher.html', context)
+
+
+def voucher_list(request):
+    staff_instance = Staff.objects.get(admin_id=request.user)
+    voucher = Voucher.objects.filter(secretary_recept_id=staff_instance).order_by('-date_prepared')
+
+    context = {
+        'voucher': voucher,
+
+    }
+    return render(request, "pages/staffPage/voucher_list.html", context)
+
+
+def voucher_details(request,voucher_id):
+    voucher=Voucher.objects.get(id=voucher_id)
+    context={
+        'voucher':voucher,
+    }
+
+    return render(request,"pages/staffPage/view_voucher.html", context)

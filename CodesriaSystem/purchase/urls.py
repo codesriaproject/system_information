@@ -11,7 +11,11 @@ urlpatterns = [
     path('add_demande_save',views.add_demande_save, name="new_demande"),
     path('demande_list',views.demande_list,name="demande_list"),
     path('demande/add_purchase/<int:staffleav_id>', views.get_demande,name="commande"),
+    path('demande/add_voucher/<int:staffleave_id>', views.get_voucher, name="voucher"),
+    path('voucher_list',views.voucher_list,name="voucher_list"),
     path('demande/purchase/<int:demande_id>', views.demande_details, name='view'),
+    path('demande/voucher/<int:voucher_id>', views.voucher_details, name='voucher_details'),
+
     #=====================Demande urls End===============================
 
     #=====================Purchase urls Start===============================    

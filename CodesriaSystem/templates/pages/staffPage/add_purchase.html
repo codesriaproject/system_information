@@ -4,7 +4,11 @@
 
 <br><br><br><br>
 
+<div style="background-color: #0c525d;border-radius: 10px;" class="row">
+    <h1 style="color: whitesmoke; text-align: center">Add Invoice For <u> {{ staffleave.staff.admin.first_name }} {{ staffleave.staff.admin.last_name }}</u> Demande</h1>
 
+</div>
+    <br><br>
   <div class="row">
 
     <button id="btn-add" class="btn btn-success w-50 col-md-6"> Add new line </button>
@@ -102,6 +106,18 @@
                 <option> Choose the signature ... </option>
                 {% for sg in signatures %}  
                 <option value="{{sg.id}}">{{sg.sign}}</option>
+                 {% endfor %}
+    </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="secretary_rept"> Receptor </label>
+            <select name="secretary_rept" class="form-control" id="secretary_rept">
+                <option> Choose the Receptor ... </option>
+                {% for sr in secretary_rept %}
+                <option value="{{sr.id}}">{{sr.admin.first_name}} {{sr.admin.last_name}}</option>
                  {% endfor %}
     </select>
         </div>

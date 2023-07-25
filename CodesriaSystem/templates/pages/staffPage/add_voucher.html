@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<br><br><br><br>
+
+
+  <div style="background-color: #0c525d; border-radius: 10px;" class="row">
+
+    <h1 style="color: whitesmoke; text-align: center">Add Voucher For <u>{{ staffleave.staff.admin.first_name }} {{ staffleave.staff.admin.last_name }}</u> Demande </h1>
+
+</div>
+<div class="form-group">
+    {% if messages %}
+      {% for message in messages %}
+      {% if message.tags == 'error' %}
+      <div class="alert alert-danger" style="margin-top:10px">{{ message }}</div>
+      {% endif %}
+      {% if message.tags == 'success' %}
+      <div class="alert alert-success" style="margin-top:10px">{{ message }}</div>
+      {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+<form method="post">
+
+    {% csrf_token %}
+
+    <div class="form-group col-md-2">
+        <input value="{{staffleave.id}}" name="staffleave" type="hidden" >
+    </div>
+
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="customer"> Supplier </label>
+            <select name="customer" class="form-control" id="customer">
+                <option> Choose the supplier ... </option>
+                {% for customer in customers %}
+                <option value="{{customer.id}}">{{customer.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+
+
+    <div id="wrapper">
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="chequetransfert">Cheque Transfert </label>
+                <input name="chequetransfert" required="False" type="text" class="form-control" id="chequetransfert">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="bankname"> Bank Name </label>
+                <input name="bankname" required="False" type="text" class="form-control" id="bankname">
+            </div>
+
+
+        </div>
+
+    </div>
+
+{#ligne 2 #}
+    <div id="wrapper">
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="budgetyear">Budget Year </label>
+                <input  name="budgetyear" required="False" type="text" class="form-control" id="budgetyear">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="programmetype"> Programme Type </label>
+                <input name="programmetype" required="False" type="text" class="form-control" id="programmetype">
+            </div>
+
+
+        </div>
+
+    </div>
+
+{#ligne3 #}
+
+    <div id="wrapper">
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="programmecode">Programme Code </label>
+                <input required="False" name="programmecode" type="text" class="form-control" id="programmecode">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="subprogrammecode"> Sub Programme Code </label>
+                <input required="False" name="subprogrammecode" type="text" class="form-control" id="subprogrammecode">
+            </div>
+
+
+        </div>
+
+    </div>
+
+{#ligne4 #}
+
+    <div id="wrapper">
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="programmeactivecode">Programme Activite Code </label>
+                <input required="False" name="programmeactivecode" type="text" class="form-control" id="programmeactivecode">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="programmeactivetitle"> Programme Activite Title </label>
+                <input required="False" name="programmeactivetitle" type="text"  class="form-control" id="programmeactivetitle">
+            </div>
+
+
+        </div>
+
+    </div>
+{#ligne5 #}
+
+    <div id="wrapper">
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="donor">Donors </label>
+                <input required="False" name="donor" type="text" class="form-control" id="donor">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="accountdebit"> Account Debit </label>
+                <input required="False" name="accountdebit" type="number" step="0.01"  class="form-control" id="accountdebit">
+            </div>
+
+
+        </div>
+
+    </div>
+
+{#ligne6#}
+
+    <div id="wrapper">
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="accountcredit">Account Credit </label>
+                <input required="False" name="accountcredit" type="number" step="0.01" class="form-control" id="accountcredit">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="total">Total </label>
+                <input required="False" name="total" type="number" step="0.01" class="form-control" id="total">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="description"> Description</label>
+            <textarea rows="5" cols="33" class="form-control" name="description" id="description" cols="30" rows="1"></textarea>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="lieu_livraison"> Lieu de Livraison</label>
+            <textarea rows="5" cols="33" class="form-control" name="lieu_livraison" id="lieu_livraison" cols="30" rows="1"></textarea>
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="signature"> Signer </label>
+            <select name="signature" class="form-control" id="signature">
+                <option> Choose the signature ... </option>
+                {% for sg in signatures %}
+                <option value="{{sg.id}}">{{sg.sign}}</option>
+                 {% endfor %}
+    </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="secretary_recept"> Receptor </label>
+            <select name="secretary_recept" class="form-control" id="secretary_recept">
+                <option> Choose the Receptor ... </option>
+                {% for sr in secretary_recept %}
+                <option value="{{sr.id}}">{{sr.admin.first_name}} {{sr.admin.last_name}}</option>
+                 {% endfor %}
+    </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary"> Add Voucher</button>
+
+</form>
+
+
+
+
+
+{% endblock main %}
+

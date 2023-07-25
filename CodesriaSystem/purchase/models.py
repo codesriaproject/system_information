@@ -28,6 +28,8 @@ class Invoice(models.Model):
     observation = models.TextField(null=True, default="")
     status = models.SmallIntegerField(default=0, null=True)
     signature =models.ForeignKey(Signature, on_delete=models.PROTECT, null=True, default=1)
+    secretary_recept=models.ForeignKey(Staff,on_delete=models.PROTECT, related_name="secretary_rept", null=True, default=2)
+
 
 
     @property
@@ -74,7 +76,39 @@ class SecretaryValidate(models.Model):
 
 
 class Voucher(models.Model):
-    pass
+    staffleave = models.ForeignKey(StaffLeave, on_delete=models.CASCADE, related_name="staff_leave_voucher", null=True, default=1)
+    date_prepared = models.DateTimeField(auto_now=False, auto_now_add=True, null=True)
+    lieu_livraison = models.TextField(null=True, default="")
+    status = models.SmallIntegerField(default=0, null=True)
+    total = models.DecimalField(max_digits=1000, decimal_places=2,null=True, default=0)
+    description = models.TextField(null=True, default="")
+    chequetransfert=models.CharField(max_length=200, null=True, default="")
+    bankname=models.CharField(max_length=200, null=True, default="")
+    budgetyear=models.DecimalField(max_digits=1000, decimal_places=2, null=True, default=0)
+    programmetype=models.CharField(max_length=200, null=True, default="")
+    programmecode=models.CharField(max_length=200, null=True, default="")
+    subprogrammecode=models.CharField(max_length=200, null=True, default="")
+    programmeactivecode=models.CharField(max_length=200, null=True, default="")
+    programmeactivetitle=models.CharField(max_length=200, null=True, default="")
+    donor=models.CharField(max_length=200, null=True, default="")
+    accountdebit=models.DecimalField(max_digits=1000, decimal_places=2, null=True, default=0)
+    accountcredit=models.DecimalField(max_digits=1000, decimal_places=2, null=True, default=0)
+    signature =models.ForeignKey(Signature, on_delete=models.PROTECT, null=True, default=1)
+    secretary_recept=models.ForeignKey(Staff,on_delete=models.PROTECT, related_name="secretary_recept", null=True, default=2)
+    client=models.ForeignKey(Fournisseur, on_delete=models.PROTECT, null=True, default=1000)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
