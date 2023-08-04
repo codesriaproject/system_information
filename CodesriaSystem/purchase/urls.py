@@ -24,6 +24,10 @@ urlpatterns = [
     path('purchase_view/<int:id>', views.InvoiceView.as_view(), name='view_purchase'),
 
     path('signature_view/', views.ModalView.as_view(), name='signature_view'),
+    path('purchase_final_list',views.achat_approuver,name="achat_approuver"),
+    path('purchase_final_view/<int:id>', views.InvoiceFinalView.as_view(), name="purchase_final_view"),
+    path('purchase_final_view_pdf/<int:id>', views.get_invoice_final_pdf, name="purchase_final_view_pdf"),
+    path('generate-qr/', views.generate_qr, name='generate_qr'),
     #=====================Fournisseur urls===============================
 
 
@@ -33,6 +37,5 @@ urlpatterns = [
     path('fournisseur_list',views.fournisseur_list,name="fournisseur_list"),
 
     #=====================Fournisseur urls End===============================
-
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL,document_root=settings.STATICFILES_DIRS)
 

@@ -1,10 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
 
-</body>
-</html>
+
+{% block main %}
+
+<div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card mt-3">
+                            <div class="card-header"> <strong>{{validate.purchase_recept.date_creation | date:"d/m/Y"}}</strong> <span class="float-end">
+                                    <a  href=" {% url 'purchase_final_view_pdf' id=validate.id %}  " class="btn btn-info">
+    										<i class="icon-printer"></i> PDF
+    									</a></span> </div>
+                            <div class="card-body">
+                                     <div  class="d-flex mb-5">
+                                    <div style="width: 300px; " class="row ">
+                                        <img style="height: 150px;width: 150px;" src=" {% static "images/codesria_logo.jpg" %} " alt="">
+                                    </div>
+                                    <div style="line-height: 1em; margin-left: -140px; margin-top: 20px">
+                                        <p style="line-height: 1em;"> Council for the Development of Social Science Research in Africa</p>
+                                        <p style="line-height: 1em;">Conseil pour le développement de la recherche en science sociales en Afrique</p>
+                                        <p style="line-height: 1em;">Conselho para O Desenvolvimento da Pesquina em Ciênsias Sociais em Africa</p>
+                                        <p style="line-height: 1em;"><strong>مجلس تنمية بحوث العلوم الاجتماعية في إفريقيا</strong></p>
+                                    </div>
+
+                                        <div class="row align-items-center">
+
+                                            <div style="width: 180px; height: 180px;" class="col-sm-3 mt-3"> <img style="margin-left: 180px; width: 180px; height: 180px" src=" {% url 'generate_qr' %} " alt="" class="img-fluid width110"> </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="d-flex justify-content-center font-roboto">
+  <h2>BON DE COMMANDE / PURCHASE ORDER N° 000{{ validate.id }}</h2>
+
+</div>
+                                <br><br>
+                                <div class="table-responsive">
+                                    <table class="table table-border">
+                                        <thead>
+                                            <tr>
+                                                <th class="center">#</th>
+                                                <th>Nom Produit / Product Name</th>
+                                                <th class="center"> Quantité /Quantity</th>
+                                                <th class="right">Prix Unitaire / Unit Price</th>
+                                                <th class="right">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for article in articles %}
+                                            <tr>
+                                                <td class="center">{{ article.id }}</td>
+                                                <td class="left strong">{{ article.name }}</td>
+                                                <td class="right">{{ article.quantity }}</td>
+                                                <td class="center">{{ article.unit_price}}</td>
+                                                <td class="right">{{ article.get_total }}</td>
+                                            </tr>
+                                        {% endfor %}
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5 col-sm-"> </div>
+                                    <div class="col-lg-5 col-sm-5 ms-auto">
+                                        <table class="table table-clear">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="left"><strong>Sous Total / Subtotal</strong></td>
+                                                    <td class="right">{{validate.purchase_recept.get_total}} USD</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="left"><strong>Total</strong></td>
+                                                    <td class="right"><strong>{{validate.purchase_recept.get_total}} USD</strong></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+
+                                    <div style="flex-direction: initial; margin: 80px;">
+
+ {% if validate.signature.sign %}
+                                    <img  style="width: 150px; height: 150px; " src="{{ validate.signature.sign.url }}" alt="profile picture">
+                                    <h4>{{ validate.purchase_recept.secretary_recept.admin.first_name }} {{ validate.purchase_recept.secretary_recept.admin.last_name }}</h4>
+                                {% else %}
+                                    <p>Aucune signature trouvée. / No signature found.</p>
+                                {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+       {% endblock main %}

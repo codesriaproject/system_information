@@ -11,7 +11,7 @@
         <div class="card dz-card" id="accordion-one">
             <div class="card-header flex-wrap">
                 <div>
-                    <h4 class="card-title">Gestion des demandes</h4>
+                    <h4 class="card-title">Achat Approuver</h4>
                 </div>
                 
             </div>
@@ -26,42 +26,32 @@
                             <tr>
 
                                 <th>Demandeur</th>
-                                {% comment %} <th>Object</th> {% endcomment %}
+                                 <th>Acheteur</th>
+                                <th>Signataire</th>
                                 <th>Date Demande</th>
                                 <th>Actions</th>
                                 
                             </tr>
                         </thead>
                         <tbody>
-                            {% for dm in demande %}
+                            {% for fn in final %}
                             <tr>
 
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <p class="mb-0 ms-2">{{dm.staff.admin.first_name}} {{dm.staff.admin.last_name}}</p>	
+                                        <p class="mb-0 ms-2">{{fn.purchase_recept.staffleave.staff.admin.first_name}} {{fn.purchase_recept.staffleave.staff.admin.last_name}}</p>
                                     </div>
                                 </td>
 
-                                {% comment %} <td>{{dm.note_demande}}</td> {% endcomment %}
-                                <td>{{dm.date_demande}}</td>
+
+                                <td>{{fn.purchase_recept.staffleave.chef_recept.admin.first_name}} {{fn.purchase_recept.staffleave.chef_recept.admin.last_name}}</td>
+                                <td>{{fn.staff.admin.first_name}} {{fn.staff.admin.last_name}}</td>
+                                <td>{{fn.purchase_recept.date_creation}}</td>
+
                                 <td>
 
-                                    <div class="d-flex align-items-right">
+                                          <a class="btn btn-success" href="{% url 'purchase_final_view' fn.id %}">Voir</a>
 
-
-
-
-                                     <a class="btn btn-primary" href="{% url 'view' dm.id %}">Voir</a>
-                                <div class="dropdown">
-                                  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Ajouter
-                                  </button>
-                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                          <a class="dropdown-item" href="">Bon de Commande</a>
-                                          <a class="dropdown-item" href="">Voucher</a>
-                                      </div>
-                                    </div>
-</div>
                                 </td>
                             </tr>
                             {% endfor %}

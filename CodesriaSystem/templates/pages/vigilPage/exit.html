@@ -48,7 +48,7 @@
                                 <td>{{uv.staff.address}}</td>
                                 <td>{{uv.staff.department_id.name}}</td>
                                 <td>
-                                    <button class="btn btn-danger" onclick="setHeure(2)">Sortie</button>
+                                    <a data-toggle="modal" data-target="#myModal" class="btn btn-danger" href="" > Sortie</a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -63,5 +63,65 @@
         </div>
     </div>
 </div>
+
+
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="sexampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title text-dark" id="sexampleModalLabel">Gestion des Sorties</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form id="myForm" method="post">
+               {% csrf_token %}
+               <input name="id" type="hidden" id="purchase_recept" value="">
+               <label  class="text-dark checkbox-inline"> <strong id="strong_id_s">Ajouter Commentaire sur cette entrée</strong></label>
+
+                                <textarea  class="form-control" name="comment" id="comment" cols="30" rows="6"></textarea>
+
+
+
+               <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger">Marqué Sortie</button>
+               </div>
+            </form>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+
+
+<script>
+
+$(document).ready(function() {
+    $("#myForm").submit(function(event) {
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "",
+            data: $(this).serialize(),
+            success: function(data) {
+
+                alert("Signature ajouter soumis avec succès !");
+
+                $("#myModal").modal("hide");
+            },
+            error: function() {
+
+                alert("Une erreur s'est produite.");
+            }
+        });
+    });
+});
+</script>
+
 
 {% endblock main %}

@@ -5,12 +5,21 @@ from purchase.forms import *
 from django.shortcuts import get_object_or_404, redirect, reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+
+import random
+import string
 from purchase.models import *
 from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
 from django.views import View
-from purchase.sup import get_invoice
+from purchase.sup import get_invoice, get_invoice_final
 from users.models import *
+import pdfkit
+import datetime
+import qrcode
+from django.template.loader import get_template
+import json
+
 
 # Create your views here.
 
@@ -103,7 +112,7 @@ def get_demande(request,staffleav_id):
         
             items = []
 
-            try: 
+            try:
 
                 customer = request.POST.get('customer')
                 
@@ -121,6 +130,16 @@ def get_demande(request,staffleav_id):
 
                 observation = request.POST.get('observation')
 
+                imputation = request.POST.get('imputation')
+
+                marche = request.POST.get('marche')
+
+                date_livraison = request.POST.get('date_livraison')
+
+                object = request.POST.get('object')
+
+                modalitedepaiement = request.POST.get('modalitedepaiement')
+
                 staffleave=request.POST.get("staffleave")
 
                 secretary_rept=request.POST.get("secretary_rept")
@@ -135,6 +154,11 @@ def get_demande(request,staffleav_id):
                     'total': total,
                     'lieu_livraison': lieu_livraison,
                     'observation': observation,
+                    'object':object,
+                    'modalitedepaiement':modalitedepaiement,
+                    'marche':marche,
+                    'imputation':imputation,
+                    'date_livraison': date_livraison,
                     
                 }
 
@@ -206,7 +230,16 @@ class InvoiceView(View):
 
         return render(request,'pages/staffPage/view_purchase.html')
 
+def achat_approuver(request):
+    # staff_instance = Staff.objects.get(admin_id=request.user)
+    # final=SecretaryValidate.objects.filter(purchase_recept__staffleave__chef_recept=staff_instance)
+    final=SecretaryValidate.objects.all()
 
+    context={
+        'final':final,
+    }
+
+    return render(request,"pages/staffPage/purchase_final_list.html", context)
 
 #=================================Purchase End==================================
 
@@ -293,6 +326,7 @@ def get_voucher(request, staffleave_id):
         elif request.method == "POST":
 
             try:
+
 
                 customer = request.POST.get('customer')
 
@@ -385,3 +419,86 @@ def voucher_details(request,voucher_id):
     }
 
     return render(request,"pages/staffPage/view_voucher.html", context)
+
+
+
+
+
+
+
+
+class InvoiceFinalView(View):
+    template_name = "pages/staffPage/purchase_final_view.html"
+
+    def get(self,request, *args, **kwargs):
+
+        id = kwargs.get('id')
+        context = get_invoice_final(id)
+
+        return render(request, self.template_name, context)
+
+
+
+
+def get_invoice_final_pdf(request, *args, **kwargs):
+    """ generate pdf file from html file """
+
+    id = kwargs.get('id')
+
+
+
+    context = get_invoice_final(id)
+
+    context['date'] = datetime.datetime.today()
+
+    # get html file
+    template = get_template('pages/staffPage/purchase_final_view_pdf.html')
+
+    # render html with context variables
+
+    html = template.render(context)
+
+    # options of pdf format
+
+    options = {
+        'page-size': 'Letter',
+        'encoding': 'UTF-8',
+        "enable-local-file-access":True,
+    }
+
+    # generate pdf
+    config = pdfkit.configuration(wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe')
+    pdf = pdfkit.from_string(html, False, options=options,configuration=config)
+
+
+    response = HttpResponse(pdf, content_type='application/pdf')
+
+    response['Content-Disposition'] = "attachement"
+
+    return response
+
+
+
+
+def generate_qr(request):
+    values_from_database = SecretaryValidate.objects.all()
+    qr_code_data = f"Demandeur: {values_from_database[0].purchase_recept.staffleave.staff.admin.first_name} { values_from_database[0].purchase_recept.staffleave.staff.admin.last_name}\nComptable: {values_from_database[0].purchase_recept.staffleave.chef_recept.admin.first_name} {values_from_database[0].purchase_recept.staffleave.chef_recept.admin.last_name}\nDate creation: {values_from_database[0].purchase_recept.date_creation}\nClient: (Nom: {values_from_database[0].purchase_recept.client.name}, Adresse: {values_from_database[0].purchase_recept.client.address}, Telephone: {values_from_database[0].purchase_recept.client.phone_number})"
+
+
+
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(qr_code_data)
+    qr.make(fit=True)
+
+
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    response = HttpResponse(content_type="image/png")
+    img.save(response, "PNG")
+    return response
+

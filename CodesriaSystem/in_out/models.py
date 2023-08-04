@@ -1,4 +1,5 @@
 from django.db import models
+from reportlab.pdfbase.pdfform import textFieldAbsolute
 
 from users.models import *
 
@@ -12,6 +13,7 @@ class InOutStaff(models.Model):
     date=models.DateField(auto_now=False, auto_now_add=True)
     enter = models.TimeField(auto_now=False, auto_now_add=True, null=True)
     exit= models.TimeField(auto_now=False, auto_now_add=False,default="", null=True)
+    comment=models.TextField(default="", null=True)
     
 
 

@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="keywords" content="">
+	<meta name="author" content="">
+	<meta name="robots" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta property="og:description" content="Yeshadmin:Customer Relationship Management Admin Bootstrap 5 Template">
+	<meta property="og:image" content="https://yeshadmin.dexignzone.com/xhtml/social-image.png">
+	<meta name="format-detection" content="telephone=no">
+
+	<!-- PAGE TITLE HERE -->
+	<title>{% block title %}{% endblock title %}</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+	<!-- tagify-css -->
+
+	<!-- Style css -->
+
+</head>
+<body>
+
+
+
+
+
+
+<div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card mt-3">
+                            <div style="position: absolute;left: 800px;" class="card-header"> <strong>{{validate.purchase_recept.date_creation | date:"d/m/Y"}}</strong>  </div>
+                            <div class="card-body">
+                                          <div style="display: block; border: 2px solid black;">
+                                    <div style="width: 150px;display: inline-block;" >
+                                        <img style="height: 140px;width: 140px; margin-bottom: 50px;" src="http://127.0.0.1:8000/static/images/codesria_logo.jpg" alt="logo">
+                                    </div>
+                                    <div style="line-height: 1em; margin: 60px; display: inline-block; height: 2px; margin-bottom: 80px;">
+                                        <p style="line-height: 1em;"> Council for the Development of Social Science Research in Africa</p>
+                                        <p style="line-height: 1em;">Conseil pour le développement de la recherche en science sociales en Afrique</p>
+                                        <p style="line-height: 1em;">Conselho para O Desenvolvimento da Pesquina em Ciênsias Sociais em Africa</p>
+                                        <p style="line-height: 1em; margin-left: 70px;"><strong>مجلس تنمية بحوث العلوم الاجتماعية في إفريقيا</strong></p>
+                                    </div>
+
+{#                                        <div style="display: inline-block;">#}
+{##}
+{#                                            <div style="width: 100px; height: 100px; margin-left: 100px;" class="col-sm-3 mt-3"> <img src="http://127.0.0.1:8000/static/images/qr.png" alt="" class="img-fluid width110"> </div>#}
+{#                                        </div>#}
+                                    </div>
+
+                                </div>
+                        <br>
+                                <div class="d-flex justify-content-center font-roboto">
+  <h2 style="text-align: center;">BON DE COMMANDE / PURCHASE ORDER N° 000{{ validate.id }} </h2>
+
+</div>
+                                <br><br>
+                                <div class="table-responsive">
+                                    <table class="table table-border">
+                                        <thead>
+                                            <tr>
+                                                <th class="center">#</th>
+                                                <th>Nom Produit / Product Name</th>
+                                                <th class="center">Quantité / Quantity</th>
+                                                <th class="right">Prix Unitaire / Unit Price</th>
+                                                <th class="right">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for article in articles %}
+                                            <tr>
+                                                <td class="center">{{ article.id }}</td>
+                                                <td class="left strong">{{ article.name }}</td>
+                                                <td class="right">{{ article.quantity }}</td>
+                                                <td class="center">{{ article.unit_price}}</td>
+                                                <td class="right">{{ article.get_total }}</td>
+                                            </tr>
+                                        {% endfor %}
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5 col-sm-"> </div>
+                                    <div class="col-lg-5 col-sm-5 ms-auto">
+                                        <table class="table table-clear">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="left"><strong>Sous Total / Subtotal</strong></td>
+                                                    <td class="right">{{validate.purchase_recept.get_total}} FCFA</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="left"><strong>Total</strong></td>
+                                                    <td class="right"><strong>{{validate.purchase_recept.get_total}} FCFA</strong></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+
+
+
+
+                                </div>
+                        <div style="margin-top: 100px" class="d-flex">
+                                 <div style="display: inline-block; height: 180px;width: 150px; margin-bottom: 80px;">
+
+                                            <div style="width: 150px; height: 180px; margin-left: 20px; margin-bottom: 80px;" class="col-sm-3 mt-3">
+                                                <img style="width: 150px; height: 180px; margin-left: 20px; margin-bottom: 80px; " src="http://127.0.0.1:8000/purchase/generate-qr" alt="" class="img-fluid width110">
+                                            </div>
+                                        </div>
+
+                        <div style=" height: 150px;width: 150px; margin-left: 500px; display: inline-block; ">
+
+ {% if validate.signature.sign %}
+                                    <img  style="height: 150px;width: 150px;" src="http://127.0.0.1:8000/{{ validate.signature.sign.url }}" alt="profile picture">
+                                    <h4>{{ validate.purchase_recept.secretary_recept.admin.first_name }} {{ validate.purchase_recept.secretary_recept.admin.last_name }}</h4>
+                                {% else %}
+                                    <p>Aucune signature trouvée. / No signature found.</p>
+                                {% endif %}
+
+                                    </div>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Required vendors -->
+
+
+	<!-- Dashboard 1 -->
+
+
+	<!-- tagify -->
+
+
+
+	<!-- Apex Chart -->
+
+
+
+	<!-- Vectormap -->
+
+
+
+	<!-- tagify -->
+
+
+
+	<!-- Apex Chart -->
+
+
+
+	<!-- Vectormap -->
+
+
+
+
+
+
+</body>
+</html>

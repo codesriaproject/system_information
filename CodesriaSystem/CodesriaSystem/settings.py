@@ -15,8 +15,14 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
+
+
+
+
+
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -47,6 +53,7 @@ INSTALLED_APPS = [
     "users",
     "django_countries",
     'ckeditor',
+    'wkhtmltopdf'
     
 ]
 
@@ -129,8 +136,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
@@ -148,6 +154,20 @@ AUTHENTICATION_BACKENDS=['users.EmailBackEnd.EmailBackEnd']
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+WKHTMLTOPDF_CMD = 'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe'
+
+WKHTMLTOPDF_CMD_OPTIONS = {
+    'quiet': True,
+}
+
+PDFKIT_CONFIG = {
+    'wkhtmltopdf': 'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe',  # Remplacez '/chemin/vers/wkhtmltopdf' par le chemin absolu de l'exécutable wkhtmltopdf sur votre système
+}
+
 
 
 LOGIN_REDIRECT_URL = '/log'
+
+
+
+

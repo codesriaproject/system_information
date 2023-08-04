@@ -3,6 +3,8 @@ from users.models import *
 from ckeditor.fields import RichTextField
 # Create your models here.
 
+from num2words import num2words
+
 
 class Fournisseur(models.Model):
     name = models.CharField(max_length = 150)
@@ -29,6 +31,11 @@ class Invoice(models.Model):
     status = models.SmallIntegerField(default=0, null=True)
     signature =models.ForeignKey(Signature, on_delete=models.PROTECT, null=True, default=1)
     secretary_recept=models.ForeignKey(Staff,on_delete=models.PROTECT, related_name="secretary_rept", null=True, default=2)
+    object= models.CharField(max_length=100,null=True, default="")
+    marche = models.CharField(max_length=100,null=True, default="")
+    modalitedepaiement=models.IntegerField(null=True, default=30)
+    imputation=models.CharField(max_length=100,null=True, default="")
+    date_livraison = models.DateTimeField(auto_now=False, auto_now_add=False,null=True)
 
 
 
@@ -36,9 +43,13 @@ class Invoice(models.Model):
     def get_total(self):
         articles = self.article_set.all()   
         total = sum(article.get_total for article in articles)
-        return total    
-    
-    
+        return total
+
+    def numwords(self):
+        articles = self.article_set.all()
+        total = sum(article.get_total for article in articles)
+
+        return num2words(total, lang='fr')
 
 
 

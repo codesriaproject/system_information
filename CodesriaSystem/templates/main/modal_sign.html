@@ -11,7 +11,7 @@
          <div class="modal-body">
             <form id="myForm" method="post">
                {% csrf_token %}
-               <input name="id_supprimer" type="hidden" id="id_supprimer">
+               <input name="id" type="hidden" id="purchase_recept" value="{{ purchase_recept.id }}">
                <label  class="text-dark checkbox-inline"> <strong id="strong_id_s">Choisir Signature</strong></label>
                <select name="signature" class="form-control" id="customer">
                 <option> Choose Your Signature ... </option>
